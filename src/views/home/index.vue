@@ -2,23 +2,27 @@
   <!-- 放置一个外层容器 -->
   <el-container>
     <!-- 左右布局 -->
-    <el-aside>左侧</el-aside>
+    <el-aside style="background-color:#353b4e;height:100vh;width:230px">
+      <!-- 左侧导航 -->
+      <layou-aside></layou-aside>
+    </el-aside>
     <!-- 再放一个container -->
     <el-container>
       <!-- 上下布局 -->
-      <el-header>
-        头部
-      </el-header>
+      <el-header>头部</el-header>
       <!-- 主要区域 -->
-      <el-main>
-        主要区域
-      </el-main>
+      <el-main>主要区域</el-main>
     </el-container>
   </el-container>
 </template>
 
 <script>
-export default {}
+import layoutAside from '../../components/home/layout-aside'
+export default {
+  components: {
+    'layou-aside': layoutAside
+  }
+}
 </script>
 
 <style>
