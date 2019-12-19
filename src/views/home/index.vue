@@ -4,7 +4,7 @@
     <!-- 左右布局 -->
     <el-aside style="background-color:#353b4e;height:100vh;width:230px">
       <!-- 左侧导航 -->
-      <layou-aside></layou-aside>
+      <layout-aside></layout-aside>
     </el-aside>
     <!-- 再放一个container -->
     <el-container>
@@ -20,13 +20,8 @@
 </template>
 
 <script>
-import layoutAside from '../../components/home/layout-aside'
-import layoutHeader from '../../components/home/layout-header'
 export default {
-  components: {
-    'layou-aside': layoutAside,
-    'layout-header': layoutHeader
-  }
+  components: {}
 }
 </script>
 

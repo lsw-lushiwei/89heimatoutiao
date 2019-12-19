@@ -3,7 +3,12 @@
     <div class="title">
       <img src="../../assets/img/logo_admin.png" alt />
     </div>
-    <el-menu style="width:231px" background-color="#353b4e" text-color="#adafb5" active-text-color="#ffd04b">
+    <el-menu
+      style="width:231px"
+      background-color="#353b4e"
+      text-color="#adafb5"
+      active-text-color="#ffd04b"
+    >
       <el-menu-item>首页</el-menu-item>
       <el-submenu index="1">
         <template slot="title">
@@ -34,7 +39,8 @@ export default {}
 
 <style lang="less" scoped>
 .layout-aside {
-    width: 230px;
+  overflow: hidden;
+  width: 230px;
   .title {
     text-align: center;
     background-color: #2e2f32;
