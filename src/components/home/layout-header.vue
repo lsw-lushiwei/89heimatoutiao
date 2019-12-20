@@ -8,10 +8,11 @@
     <el-col :span="4" class="right">
       <el-row type="flex" justify="end" align="middle">
         <!-- 头像 -->
-        <img src="../../assets/img/avatar.jpg" alt />
+        <!-- 如果有头像时使用头像，没有头像时使用默认头像 -->
+        <img :src="userInfo.photo ? userInfo.photo : defaultImg" alt />
         <!-- 下拉菜单 -->
         <el-dropdown>
-          <span class="el-dropdown-link">下拉菜单</span>
+          <span class="el-dropdown-link">{{userInfo.name}}</span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>个人信息</el-dropdown-item>
             <el-dropdown-item>Git地址</el-dropdown-item>
@@ -24,7 +25,29 @@
 </template>
 
 <script>
-export default {}
+export default {
+  // 生命周期查询用户头像
+  data () {
+    return {
+      userInfo: {}, // 用户信息
+      defaultImg: require('../../assets/img/avatar.jpg') // 先把地址转换成变量，再使用三元表达式
+    }
+  },
+  created () {
+    // 获取令牌
+    let token = window.localStorage.getItem('user-token')
+    this.$axios({
+      url: '/user/profile',
+      // headers参数
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then(res => {
+      console.log(res.data)
+      this.userInfo = res.data.data // 获取用户个人信息
+    })
+  }
+}
 </script>
 
 <style lang="less" scoped>
