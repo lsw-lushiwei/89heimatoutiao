@@ -11,12 +11,13 @@
         <!-- 如果有头像时使用头像，没有头像时使用默认头像 -->
         <img :src="userInfo.photo ? userInfo.photo : defaultImg" alt />
         <!-- 下拉菜单 -->
-        <el-dropdown>
+        <!-- 绑定方法，实现退出 -->
+        <el-dropdown @command="handleCommand">
           <span class="el-dropdown-link">{{userInfo.name}}</span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>个人信息</el-dropdown-item>
-            <el-dropdown-item>Git地址</el-dropdown-item>
-            <el-dropdown-item>退出</el-dropdown-item>
+            <el-dropdown-item command="information">个人信息</el-dropdown-item>
+            <el-dropdown-item command="git">Git地址</el-dropdown-item>
+            <el-dropdown-item command="quit">退出</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </el-row>
@@ -43,9 +44,21 @@ export default {
         Authorization: `Bearer ${token}`
       }
     }).then(res => {
-      console.log(res.data)
+      // console.log(res.data)
       this.userInfo = res.data.data // 获取用户个人信息
     })
+  },
+  // 使用elementui注册事件，实现退出
+  methods: {
+    handleCommand (command) {
+      if (command === 'quit') {
+        // 退出并销毁令牌
+        window.localStorage.removeItem('user-token') // 删除用户令牌
+        this.$router.push('/login') // 编程导航
+      } else if (command === 'git') {
+        window.location.href = 'http://github.com/shuiruohanyu/89heimatoutiao'
+      }
+    }
   }
 }
 </script>
