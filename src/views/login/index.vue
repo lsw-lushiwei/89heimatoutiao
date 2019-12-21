@@ -94,7 +94,7 @@ export default {
                 showClose: true,
                 type: 'success'
               })
-              window.localStorage.setItem('user-token', res.data.data.token) // 前端缓存令牌
+              window.localStorage.setItem('user-token', res.data.token) // 前端缓存令牌
               this.$router.push('/home') // 跳转到主页
             })
             .catch(() => {

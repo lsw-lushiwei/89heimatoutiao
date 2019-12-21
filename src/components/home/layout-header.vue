@@ -41,7 +41,7 @@ export default {
       // headers参数
     }).then(res => {
       // console.log(res.data)
-      this.userInfo = res.data.data // 获取用户个人信息
+      this.userInfo = res.data // 获取用户个人信息
     })
   },
   // 使用elementui注册事件，实现退出
