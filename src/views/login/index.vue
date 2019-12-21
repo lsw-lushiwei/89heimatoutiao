@@ -86,25 +86,11 @@ export default {
             url: '/authorizations',
             method: 'post',
             data: this.loginForm
+          }).then(res => {
+            // 代表成功进入then
+            window.localStorage.setItem('user-token', res.data.token) // 前端缓存令牌
+            this.$router.push('/home') // 跳转到主页
           })
-            .then(res => {
-              // 代表成功进入then
-              this.$message({
-                message: '登陆成功',
-                showClose: true,
-                type: 'success'
-              })
-              window.localStorage.setItem('user-token', res.data.token) // 前端缓存令牌
-              this.$router.push('/home') // 跳转到主页
-            })
-            .catch(() => {
-              // 代表失败进入catch
-              this.$message({
-                message: '手机号或验证码不正确',
-                showClose: true,
-                type: 'error'
-              })
-            })
         }
       })
     }

@@ -48,11 +48,6 @@ export default {
   methods: {
     handleCommand (command) {
       if (command === 'quit') {
-        this.$message({
-          message: '退出成功',
-          showClose: true,
-          type: 'success'
-        })
         // 退出并销毁令牌
         window.localStorage.removeItem('user-token') // 删除用户令牌
         this.$router.push('/login') // 编程导航
