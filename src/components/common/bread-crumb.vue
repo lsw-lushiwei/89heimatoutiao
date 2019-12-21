@@ -1,11 +1,11 @@
 <template>
-  <el-breadcrimb>
-    <el-breadcrimb-item to="/home">首页</el-breadcrimb-item>
-    <el-breadcrimb-item>
+  <el-breadcrumb>
+    <el-breadcrumb-item to="/home">首页</el-breadcrumb-item>
+    <el-breadcrumb-item>
         <!-- 具名插槽 -->
         <slot name='title'></slot>
-    </el-breadcrimb-item>
-  </el-breadcrimb>
+    </el-breadcrumb-item>
+  </el-breadcrumb>
 </template>
 
 <script>
