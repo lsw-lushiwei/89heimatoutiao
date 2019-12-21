@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
+import './permission/index'
 import router from './router'
 import ElementUI from 'element-ui' // 引入element-ui包
 import 'element-ui/lib/theme-chalk/index.css' // 引入element-ui样式

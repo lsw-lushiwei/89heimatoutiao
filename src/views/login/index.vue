@@ -48,24 +48,34 @@ export default {
       loginRules: {
         // 验证表单输入规则
         // required:true为必填   pattern为正则表达式
-        mobile: [{ required: true, message: '请输入手机号' }, { pattern: /^1[3456789]\d{9}$/, message: '请输入正确的手机号' }],
-        code: [{ required: true, message: '请输入您的验证码' }, { pattern: /^\d{6}$/, message: '验证码为6为数字' }],
-        clause: [{ validator: function (rule, value, callback) {
-          // rule是当前的规则，没什么用
-          // value是我们要校验的字段的值
-          if (value) {
-            // 如果为true则校验通过
-            callback() // 通过直接执行callback方法
-          } else {
-            callback(new Error('请阅读并勾选用户协议和隐私条款'))
+        mobile: [
+          { required: true, message: '请输入手机号' },
+          { pattern: /^1[3456789]\d{9}$/, message: '请输入正确的手机号' }
+        ],
+        code: [
+          { required: true, message: '请输入您的验证码' },
+          { pattern: /^\d{6}$/, message: '验证码为6为数字' }
+        ],
+        clause: [
+          {
+            validator: function (rule, value, callback) {
+              // rule是当前的规则，没什么用
+              // value是我们要校验的字段的值
+              if (value) {
+                // 如果为true则校验通过
+                callback() // 通过直接执行callback方法
+              } else {
+                callback(new Error('请阅读并勾选用户协议和隐私条款'))
+              }
+            }
           }
-        } }]
+        ]
       }
     }
   },
   methods: {
     registerLogin () {
-      this.$refs.vessel.validate((isOK) => {
+      this.$refs.vessel.validate(isOK => {
         if (isOK) {
           // 认为校验表单数据成功
           // console.log('前端校验成功，将手机号与验证码发到后端校验')
@@ -76,17 +86,25 @@ export default {
             url: '/authorizations',
             method: 'post',
             data: this.loginForm
-          }).then(res => {
-            // 代表成功进入then
-            window.localStorage.setItem('user-token', res.data.data.token) // 前端缓存令牌
-            this.$router.push('/home') // 跳转到主页
-          }).catch(() => {
-            // 代表失败进入catch
-            this.$message({
-              message: '手机号或验证码不正确',
-              type: 'error'
-            })
           })
+            .then(res => {
+              // 代表成功进入then
+              this.$message({
+                message: '登陆成功',
+                showClose: true,
+                type: 'success'
+              })
+              window.localStorage.setItem('user-token', res.data.data.token) // 前端缓存令牌
+              this.$router.push('/home') // 跳转到主页
+            })
+            .catch(() => {
+              // 代表失败进入catch
+              this.$message({
+                message: '手机号或验证码不正确',
+                showClose: true,
+                type: 'error'
+              })
+            })
         }
       })
     }
