@@ -36,13 +36,9 @@ export default {
   },
   created () {
     // 获取令牌
-    let token = window.localStorage.getItem('user-token')
     this.$axios({
-      url: '/user/profile',
+      url: '/user/profile'
       // headers参数
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
     }).then(res => {
       // console.log(res.data)
       this.userInfo = res.data.data // 获取用户个人信息
