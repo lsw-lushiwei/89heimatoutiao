@@ -2,6 +2,7 @@
 import axios from 'axios'
 import router from '../router'
 import { Message } from 'element-ui'
+import JSONBig from 'json-bigint'
 // 请求拦截器
 axios.interceptors.request.use(function (config) {
   // 执行请求ok
@@ -12,6 +13,10 @@ axios.interceptors.request.use(function (config) {
 }, function () {
   // 执行请求失败
 })
+// 后台数据到达响应拦截之前走的一个函数
+axios.defaults.transformResponse = [function (data) {
+  return JSONBig.parse(data)
+}]
 // 响应拦截
 axios.interceptors.response.use(function (response) {
   // 成功时执行
