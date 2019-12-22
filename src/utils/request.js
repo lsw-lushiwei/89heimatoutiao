@@ -45,5 +45,7 @@ axios.interceptors.response.use(function (response) {
   }
   // 状态码提示
   Message({ type: 'warning', message })
+  // 想让错误拦截器的内容继续进入到以后的catch中，而不是then
+  return Promise.reject(error)
 })
 export default axios
