@@ -3,7 +3,6 @@ import VueRouter from 'vue-router'
 import Home from '../views/home/index.vue'
 import Login from '../views/login/index.vue'
 import Home2 from '../views/home/home.vue'
-import Commont from '../views/comment'
 
 Vue.use(VueRouter)
 
@@ -22,7 +21,7 @@ const routes = [{
   }, {
     // 二级路由表
     path: '/home/comment',
-    component: Commont // 由于包的问题，无法使用按需加载
+    component: () => import('../views/comment') // 由于包的问题，无法使用按需加载
   }]
 }, {
   // 登录页

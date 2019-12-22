@@ -4,7 +4,7 @@ import router from '../router/index'
 router.beforeEach(function (to, from, next) {
   // 拦截谁？判断拦截地址
   // 由于框架升级了corejs版本，导致字符串方式编译问题
-  if (to.path !== '/login') {
+  if (to.path.startsWith('/home')) {
     // 进行权限判断，判断是否有token，如果有，则放过，如果没有，回到登录页
     let token = window.localStorage.getItem('user-token')
     if (token) {

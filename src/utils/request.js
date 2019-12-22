@@ -26,12 +26,14 @@ axios.interceptors.response.use(function (response) {
       message = '手机号或验证码错误'
       break
     case 401:
-      // token过期，强制跳转到登录页面
+      // token过期，强制跳转到登录页面，并删除token令牌
+      window.localStorage.removeItem('user-token')
       router.push('/login')
       break
     case 403:
       // 如果是同样的状态码，但是不同意思，需要通过请求地址来判断是哪个响应
-      // resfehtoken过期，强制跳转到登录页面 resfehtoken是用来换取token的
+      // resfehtoken过期，强制跳转到登录页面 resfehtoken是用来换取token的，并删除token令牌
+      window.localStorage.removeItem('user-token')
       router.push('/login')
       break
     case 507:
