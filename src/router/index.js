@@ -21,7 +21,7 @@ const routes = [{
   }, {
     // 二级路由表
     path: '/home/comment',
-    component: () => import('../views/comment') // 由于包的问题，无法使用按需加载
+    component: () => import('../views/comment')
   }, {
     path: 'material',
     component: () => import('../views/material')
