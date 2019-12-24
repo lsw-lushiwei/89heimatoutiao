@@ -71,7 +71,7 @@
           <span>
             <i class="el-icon-edit"></i>修改
           </span>
-          <span>
+          <span @click="delArticle(item.id)">
             <i class="el-icon-delete"></i>删除
           </span>
         </el-row>
@@ -135,6 +135,22 @@ export default {
     }
   },
   methods: {
+    // 注册删除事件
+    delArticle (id) {
+      // 当前已发布的文章是无法删除的，只有类型是草稿的文章可以删除
+      this.$confirm('确定删除?').then(() => {
+        this.$axios({
+          method: 'delete',
+          url: `/articles/${id.toString()}` // 大数据类型，转换成字符串类型
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '删除成功'
+          })
+          this.getConditionArticle() // 重新刷新调取数据
+        })
+      })
+    },
     // 改变页码事件
     changePage (newPage) {
       // 赋值当前页码

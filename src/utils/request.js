@@ -29,7 +29,7 @@ axios.interceptors.response.use(function (response) {
   let message = '' // 提示信息
   switch (status) {
     case 400:
-      message = '手机号或验证码错误'
+      message = '请求参数错误'
       break
     case 401:
       // token过期，强制跳转到登录页面，并删除token令牌
