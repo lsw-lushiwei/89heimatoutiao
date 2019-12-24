@@ -38,8 +38,41 @@
           type="daterange"
           range-separator="-"
           start-placeholder="开始日期"
-          end-placeholder="结束日期">
-        </el-date-picker>
+          end-placeholder="结束日期"
+        ></el-date-picker>
+      </el-col>
+    </el-row>
+    <el-row class="total">
+      <span>共找到10000条符合条件的内容</span>
+    </el-row>
+    <el-row
+      v-for="item in 100"
+      :key="item"
+      class="article-item"
+      type="flex"
+      justify="space-between"
+    >
+      <el-col :span="10">
+        <!-- 左侧 -->
+        <el-row type="flex">
+          <img src="../../assets/img/404.png" alt />
+          <div class="info">
+            <span>123</span>
+            <el-tag class="tag">已发布</el-tag>
+            <span class="data">123123132</span>
+          </div>
+        </el-row>
+      </el-col>
+      <el-col :span="6">
+        <!-- 右侧 -->
+        <el-row type="flex" justify="end" class="right">
+          <span>
+            <i class="el-icon-edit"></i>修改
+          </span>
+          <span>
+            <i class="el-icon-delete"></i>删除
+          </span>
+        </el-row>
       </el-col>
     </el-row>
   </el-card>
@@ -78,6 +111,42 @@ export default {
   .serachTool {
     height: 60px;
     padding-left: 50px;
+  }
+  .total {
+    height: 40px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    border-bottom: 1px dashed #ccc;
+  }
+  .article-item {
+    margin: 20px 0;
+    padding: 10px 0;
+    border-bottom: 1px solid #f2f3f5;
+    img {
+      width: 160px;
+      height: 100px;
+      margin-right: 10px;
+      border-radius: 5px;
+    }
+    .info {
+      height: 100px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      .tag {
+        max-width: 80px;
+      }
+      .data {
+        color: #999;
+        font-size: 12px;
+      }
+    }
+    .right {
+      span {
+        margin-left: 15px;
+        font-size: 12px;
+      }
+    }
   }
 }
 </style>
