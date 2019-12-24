@@ -15,7 +15,8 @@ axios.interceptors.request.use(function (config) {
 })
 // 后台数据到达响应拦截之前走的一个函数
 axios.defaults.transformResponse = [function (data) {
-  return JSONBig.parse(data)
+  // data有可能是空字符串，判断一下
+  return data ? JSONBig.parse(data) : {}
 }]
 // 响应拦截
 axios.interceptors.response.use(function (response) {

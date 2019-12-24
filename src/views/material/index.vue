@@ -15,8 +15,12 @@
           <el-card class="img-card" v-for="item in list" :key="item.id">
             <img :src="item.url" alt />
             <el-row class="operate" type="flex" align="middle" justify="space-around">
-              <i class="el-icon-star-on"></i>
-              <i class="el-icon-delete-solid"></i>
+              <i
+                @click="collectOrCancel(item)"
+                :style="{color:item.is_collected ? 'red' : ''}"
+                class="el-icon-star-on"
+              ></i>
+              <i @click="delMaterial(item.id)" class="el-icon-delete-solid"></i>
             </el-row>
           </el-card>
         </div>
@@ -67,6 +71,39 @@ export default {
     }
   },
   methods: {
+    // 定义一个删除方法
+    delMaterial (id) {
+      this.$confirm('确定删除？').then(() => {
+        // 调用删除接口
+        this.$axios({
+          url: `/user/images/${id}`,
+          method: 'delete'
+        }).then(() => {
+          // 重新加载数据
+          this.$message({
+            message: '删除成功',
+            type: 'success'
+          })
+          this.getAllMaterial()
+        })
+      })
+    },
+    // 收藏或者取消收藏
+    collectOrCancel (row) {
+      this.$axios({
+        url: `/user/images/${row.id}`,
+        method: 'put',
+        data: {
+          collect: !row.is_collected // 如果是收藏则变成取消，如果是取消则变成收藏
+        }
+      }).then(() => {
+        this.$message({
+          message: '操作成功',
+          type: 'success'
+        })
+        this.getAllMaterial() // 调用重新加载
+      })
+    },
     // 上传图片
     uploadImg (params) {
       this.loding = true
@@ -134,6 +171,9 @@ export default {
       background-color: #f4f5f6;
       height: 30px;
       margin-left: -20px;
+      i {
+        cursor: pointer;
+      }
     }
   }
 }
