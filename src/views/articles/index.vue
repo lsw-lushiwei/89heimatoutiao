@@ -45,7 +45,7 @@
       </el-col>
     </el-row>
     <el-row class="total">
-      <span>共找到10000条符合条件的内容</span>
+      <span>共找到{{page.total}}条符合条件的内容</span>
     </el-row>
     <el-row
       v-for="item in list"
@@ -77,6 +77,10 @@
         </el-row>
       </el-col>
     </el-row>
+    <el-row type="flex" justify="center" align="middle" style="height: 60px">
+        <el-pagination background layout="prev, pager, next" :total="page.total" :current-page="page.currentPage" :page-size="page.pageSize" @current-change="changePage">
+        </el-pagination>
+    </el-row>
   </el-card>
 </template>
 
@@ -91,7 +95,12 @@ export default {
       },
       channels: [], // 定义一个channels接收频道
       list: [], // 用来接收文章列表数据
-      deteRange: require('../../assets/img/timg.gif')
+      deteRange: require('../../assets/img/timg.gif'),
+      page: {
+        currentPage: 1, // 当前页码
+        pageSize: 10, // 每页数据要求最低10条
+        total: 0
+      }
     }
   },
   filters: {
@@ -126,10 +135,23 @@ export default {
     }
   },
   methods: {
+    // 改变页码事件
+    changePage (newPage) {
+      // 赋值当前页码
+      this.page.currentPage = newPage // 赋值当前页
+      this.getConditionArticle()
+    },
     // 改变筛选条件
     changeCondition () {
-      // 组合条件
+      this.page.currentPage = 1 // 强制将当前页码回到第一页
+      this.getConditionArticle()
+    },
+    // 封装方法，改变页码事件与改变筛选条件代码大部分重复
+    // 搜索与分页放到一起
+    getConditionArticle () {
       let params = {
+        page: this.page.currentPage, // 分页信息
+        per_page: this.page.pageSize, // 分页信息
         status: this.formData.status === 5 ? null : this.formData.status, // 不传参数为全部 5代表全部   最新参数
         channel_id: this.formData.channel_id, // 频道
         begin_pubdate: this.formData.dateRange.length ? this.formData.dateRange[0] : null, // 起止时间
@@ -151,13 +173,14 @@ export default {
         url: '/articles',
         params
       }).then(res => {
-        this.list = res.data.results
+        this.list = res.data.results // 接收文章列表数据
+        this.page.total = res.data.total_count // 文章总数
       })
     }
   },
   created () {
     this.getChannels() // 调用获取频道数据
-    this.getArticles() // 调用获取文章列表
+    this.getArticles({ page: 1, per_page: 10 }) // 调用获取文章列表 第一次默认第一页，十条数据
   }
 }
 </script>
