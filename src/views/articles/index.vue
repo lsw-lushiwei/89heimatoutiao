@@ -46,20 +46,20 @@
       <span>共找到10000条符合条件的内容</span>
     </el-row>
     <el-row
-      v-for="item in 100"
-      :key="item"
+      v-for="item in list"
+      :key="item.id.toString()"
       class="article-item"
       type="flex"
       justify="space-between"
     >
-      <el-col :span="10">
+      <el-col :span="14">
         <!-- 左侧 -->
         <el-row type="flex">
-          <img src="../../assets/img/404.png" alt />
+          <img :src="item.cover.images.length ? item.cover.images[0] : deteRange" alt />
           <div class="info">
-            <span>123</span>
-            <el-tag class="tag">已发布</el-tag>
-            <span class="data">123123132</span>
+            <span>{{item.title}}</span>
+            <el-tag type="item.status | filterType" class="tag">{{item.status | filterStatus}}</el-tag>
+            <span class="data">{{item.pubdate}}</span>
           </div>
         </el-row>
       </el-col>
@@ -87,7 +87,40 @@ export default {
         channel_id: null, // 默认为空
         dateRange: []
       },
-      channels: [] // 定义一个channels接收频道
+      channels: [], // 定义一个channels接收频道
+      list: [], // 用来接收文章列表数据
+      deteRange: require('../../assets/img/timg.gif')
+    }
+  },
+  filters: {
+    // 处理显示状态
+    filterStatus (value) {
+      switch (value) {
+        case 0:
+          return '草稿'
+        case 1:
+          return '待审核'
+        case 2:
+          return '已发布'
+        case 3:
+          return '审核失败'
+        default:
+          break
+      }
+    },
+    filterType (value) {
+      switch (value) {
+        case 0:
+          return 'warning'
+        case 1:
+          return 'info'
+        case 2:
+          return ''
+        case 3:
+          return 'danger'
+        default:
+          break
+      }
     }
   },
   methods: {
@@ -98,10 +131,19 @@ export default {
       }).then(res => {
         this.channels = res.data.channels
       })
+    },
+    // 获取文章列表数据
+    getArticles () {
+      this.$axios({
+        url: '/articles'
+      }).then(res => {
+        this.list = res.data.results
+      })
     }
   },
   created () {
     this.getChannels() // 调用获取频道数据
+    this.getArticles() // 调用获取文章列表
   }
 }
 </script>
@@ -134,7 +176,7 @@ export default {
       flex-direction: column;
       justify-content: space-between;
       .tag {
-        max-width: 80px;
+        max-width: 60px;
       }
       .data {
         color: #999;
