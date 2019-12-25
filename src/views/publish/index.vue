@@ -87,22 +87,31 @@ export default {
     publishArticle (draft) {
       this.$refs.publishForm.validate((isOK) => {
         if (isOK) {
-          // 进入到这一步可以调用接口了
+          let { articleId } = this.$route.params // 获取动态路由参数
           this.$axios({
-            url: '/articles',
-            method: 'post',
-            params: { draft }, // query参数
+            method: articleId ? 'put' : 'post',
+            url: articleId ? `/articles/${articleId}` : '/articles',
+            params: { draft },
             data: this.formData
-          }).then(() => {
-            // 代表新增成功，应该到内容列表
+          }).then(res => {
             this.$router.push('/home/articles') // 回到内容列表
           })
         }
+      })
+    },
+    getArticleById (articleId) {
+      this.$axios({
+        url: `/articles/${articleId}`
+      }).then(res => {
+        this.formData = res.data // 将指定文章数据给data数据
       })
     }
   },
   created () {
     this.getChannels() // 获取频道数据
+    // 获取id 判断是否有id，如果有，则修改，如果没有，则发布
+    let { articleId } = this.$route.params // 获取动态路由参数
+    articleId && this.getArticleById(articleId) // 获取文章数据
   }
 }
 </script>
