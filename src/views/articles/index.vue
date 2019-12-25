@@ -60,7 +60,7 @@
           <img :src="item.cover.images.length ? item.cover.images[0] : deteRange" alt />
           <div class="info">
             <span style="max-width:35em">{{item.title}}</span>
-            <el-tag type="item.status | filterType" class="tag">{{item.status | filterStatus}}</el-tag>
+            <el-tag :type="item.status | filterType" class="tag">{{item.status | filterStatus}}</el-tag>
             <span class="data">{{item.pubdate}}</span>
           </div>
         </el-row>
