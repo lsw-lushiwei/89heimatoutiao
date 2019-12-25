@@ -24,8 +24,9 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button @click="publishArticle" type="primary">发布</el-button>
-        <el-button @click="publishArticle">存入草稿</el-button>
+          <!-- 如果不传参数，必须要加一个括号，代表没有参数，是undefined，undefined的值为false，不加会报错，因为默认的第一个参数不是布尔值 -->
+        <el-button @click="publishArticle()" type="primary">发布</el-button>
+        <el-button @click="publishArticle(true)">存入草稿</el-button>
       </el-form-item>
     </el-form>
   </el-card>
@@ -64,11 +65,19 @@ export default {
         this.channels = res.data.channels // 获取频道数据
       })
     },
-    publishArticle () {
-      this.$refs.publishForm.validate(function (isOK) {
+    publishArticle (draft) {
+      this.$refs.publishForm.validate((isOK) => {
         if (isOK) {
           // 进入到这一步可以调用接口了
-          console.log('成功')
+          this.$axios({
+            url: '/articles',
+            method: 'post',
+            params: { draft }, // query参数
+            data: this.formData
+          }).then(() => {
+            // 代表新增成功，应该到内容列表
+            this.$router.push('/home/articles') // 回到内容列表
+          })
         }
       })
     }
