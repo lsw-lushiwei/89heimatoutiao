@@ -240,6 +240,7 @@ export default {
       span {
         margin-left: 15px;
         font-size: 12px;
+        cursor: pointer;
       }
     }
   }
