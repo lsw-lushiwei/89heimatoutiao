@@ -56,6 +56,25 @@ export default {
       }
     }
   },
+  watch: {
+    // watch中的this指向实例组件
+    $route: function (to, from) {
+      if (Object.keys(to.params).length) {
+        // 如果有参数，则修改
+      } else {
+        // 没有参数，则发布
+        this.formData = // 没有参数，发布
+        this.formData = {
+          title: '', // 标题
+          content: '', // 文章内容
+          cover: {
+            type: 0, // 封面类型
+            images: [] // 存储图片地址
+          }
+        }
+      }
+    }
+  },
   methods: {
     // 获取频道
     getChannels () {

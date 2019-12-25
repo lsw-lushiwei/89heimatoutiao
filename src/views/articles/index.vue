@@ -68,7 +68,7 @@
       <el-col :span="6">
         <!-- 右侧 -->
         <el-row type="flex" justify="end" class="right">
-          <span>
+          <span @click="toModify(item.id)">
             <i class="el-icon-edit"></i>修改
           </span>
           <span @click="delArticle(item.id)">
@@ -135,6 +135,10 @@ export default {
     }
   },
   methods: {
+    // 注册修改文章事件
+    toModify (id) {
+      this.$router.push(`/home/publish/${id.toString()}`) // 跳转到发布页面,并且把id转成字符串,默认是大数据类型
+    },
     // 注册删除事件
     delArticle (id) {
       // 当前已发布的文章是无法删除的，只有类型是草稿的文章可以删除
