@@ -21,20 +21,23 @@ const routes = [{
   }, {
     // 二级路由表
     path: '/home/comment',
-    component: () => import('../views/comment')
+    component: () => import('../views/comment') // 按需加载
   }, {
     path: 'material',
-    component: () => import('../views/material')
+    component: () => import('../views/material') // 按需加载
   }, {
     path: 'articles',
-    component: () => import('../views/articles')
+    component: () => import('../views/articles') // 按需加载
   },
   {
     path: 'publish', // 此规则只匹配新增文章
-    component: () => import('../views/publish')
+    component: () => import('../views/publish') // 按需加载
   }, {
     path: 'publish/:articleId', // 定义一个动态路由参数,此规则只匹配修改文章
-    component: () => import('../views/publish')
+    component: () => import('../views/publish') // 按需加载
+  }, {
+    path: 'account', // 账户信息
+    component: () => import('../views/account') // 按需加载
   }]
 }, {
   // 登录页
