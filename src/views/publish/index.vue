@@ -19,7 +19,7 @@
         </el-radio-group>
       </el-form-item>
       <!-- 放置封面组件 用到父组件给子组件传值 -->
-      <cover-image :list='formData.cover.images'></cover-image>
+      <cover-image @clickOneImg="receiveImg" :list='formData.cover.images'></cover-image>
       <el-form-item prop="channel_id" label="频道">
         <el-select v-model="formData.channel_id">
           <el-option v-for="item in channels" :key="item.id" :value="item.id" :label="item.name"></el-option>
@@ -94,6 +94,14 @@ export default {
     // }
   },
   methods: {
+    // 接收方法
+    receiveImg (img, index) {
+      // 接收到数据后修改images数组 由于images是数组，根据数组的下标进行判断修改谁
+      // 此时得到了地址和下标 进行修改
+      // this.formData.cover.images[index] = img // 这种不可以，不符合vue的响应式数据，数据发生改变时，要可以让vue监控到
+      // 将数组赋值给新数组vue就可以监控到   数组变成新数组就会触发响应式视图更新
+      this.formData.cover.images = this.formData.cover.images.map((item, i) => i === index ? img : item)
+    },
     // 切换类型时触发
     changeType () {
       if (this.formData.cover.type === 0 || this.formData.cover.type === -1) {

@@ -6,6 +6,7 @@ import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 import CoverImage from './publish/cover-image'
+import SelectImage from './publish/select-image'
 
 export default {
   install (Vue) {
@@ -14,5 +15,6 @@ export default {
     Vue.component('bread-crumb', BreadCrumb) // 全局注册一个面包屑组件
     Vue.component('quill-editor', quillEditor) // 全局注册富文本编辑器
     Vue.component('cover-image', CoverImage) // 注册一个封面组件
+    Vue.component('select-image', SelectImage) // 注册选择素材组件
   }
 }
