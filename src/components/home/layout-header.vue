@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import eventBus from '../../utils/eventBus' // 引入公共实例
 export default {
   // 生命周期查询用户头像
   data () {
@@ -35,17 +36,27 @@ export default {
     }
   },
   created () {
-    // 获取令牌
-    this.$axios({
-      url: '/user/profile'
-      // headers参数
-    }).then(res => {
-      // console.log(res.data)
-      this.userInfo = res.data // 获取用户个人信息
+    // 先调用方法
+    this.getUserInfo()
+    // 实例创建完毕 立刻监听
+    eventBus.$on('updateUserInfoSuccess', () => {
+      // 收到了它更新数据的消息了  再调用一次方法刷新页面
+      this.getUserInfo()
     })
   },
   // 使用elementui注册事件，实现退出
   methods: {
+    // 封装方法
+    getUserInfo () {
+      // 获取令牌
+      this.$axios({
+        url: '/user/profile'
+      // headers参数
+      }).then(res => {
+      // console.log(res.data)
+        this.userInfo = res.data // 获取用户个人信息
+      })
+    },
     handleCommand (command) {
       if (command === 'quit') {
         // 退出并销毁令牌
@@ -53,6 +64,8 @@ export default {
         this.$router.push('/login') // 编程导航
       } else if (command === 'git') {
         window.location.href = 'http://github.com/shuiruohanyu/89heimatoutiao'
+      } else if (command === 'information') {
+        this.$router.push('/home/account')
       }
     }
   }
