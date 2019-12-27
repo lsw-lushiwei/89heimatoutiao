@@ -5,21 +5,21 @@
     </bread-crumb>
     <!-- 头像组件 -->
     <el-upload class="head-upload" action="" :show-file-list="false">
-      <img src="../../assets/img/avatar.jpg" alt="">
+      <img :src="formData.photo ? formData.photo : defaultImg" alt="">
     </el-upload>
     <!-- 放置组件 -->
     <el-form style="margin-left: 50px" label-width="100px">
       <el-form-item label="用户名">
-        <el-input style="width: 30%"></el-input>
+        <el-input v-model="formData.name" style="width: 30%"></el-input>
       </el-form-item>
       <el-form-item label="简介">
-        <el-input style="width: 30%"></el-input>
+        <el-input v-model="formData.intro"  style="width: 30%"></el-input>
       </el-form-item>
       <el-form-item label="邮箱">
-        <el-input style="width: 30%"></el-input>
+        <el-input v-model="formData.email"  style="width: 30%"></el-input>
       </el-form-item>
       <el-form-item label="手机号">
-        <el-input disabled="" style="width: 30%"></el-input>
+        <el-input v-model="formData.mobile"  disabled="" style="width: 30%"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary">保存信息</el-button>
@@ -29,7 +29,34 @@
 </template>
 
 <script>
-export default {}
+export default {
+  data () {
+    return {
+      // 定义一个表单数据对象
+      formData: {
+        name: '', // 用户名
+        intro: '', // 简介
+        photo: '', // 头像
+        email: '', // 邮箱
+        mobile: '' // 手机号
+      },
+      defaultImg: require('../../assets/img/avatar.jpg') // 如果没有头像则使用默认头像
+    }
+  },
+  methods: {
+    // 获取用户信息
+    getUserInfo () {
+      this.$axios({
+        url: '/user/profile'
+      }).then(res => {
+        this.formData = res.data
+      })
+    }
+  },
+  created () {
+    this.getUserInfo() // 获取用户信息
+  }
+}
 </script>
 
 <style lang='less' scoped>
