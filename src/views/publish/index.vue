@@ -58,9 +58,11 @@ export default {
   },
   watch: {
     // watch中的this指向实例组件
+    // 解决两个路由共用一个组件进行跳转的时候  组件没有销毁
     $route: function (to, from) {
       if (Object.keys(to.params).length) {
         // 如果有参数，则修改
+        this.getArticleById(to.params.articleId) // 如果有修改 重新拉取数据
       } else {
         // 没有参数，则发布
         this.formData = // 没有参数，发布
@@ -72,6 +74,20 @@ export default {
             images: [] // 存储图片地址
           }
         }
+      }
+    },
+    // 监控嵌套对象中的值
+    'formData.cover.type': function () {
+      // this指向组件实例
+      if (this.formData.cover.type === 0 || this.formData.cover.type === -1) {
+        // 无图或者自动
+        this.formData.cover.images = []
+      } else if (this.formData.cover.type === 1) {
+        // 单图
+        this.formData.cover.images = ['']
+      } else if (this.formData.cover.type === 3) {
+        // 三图
+        this.formData.cover.images = ['', '', '']
       }
     }
   },
