@@ -2,9 +2,9 @@
   <!-- 放置一个外层容器 -->
   <el-container>
     <!-- 左右布局 -->
-    <el-aside style="background-color:#353b4e;height:100;width:230px;min-height: 100vh">
+    <el-aside :style="{width: collaspse ? '60px' : '231px'}" style="transition: all 0.3s; background-color:#353b4e;height:100;min-height: 100vh">
       <!-- 左侧导航 -->
-      <layout-aside></layout-aside>
+      <layout-aside :collaspse='collaspse'></layout-aside>
     </el-aside>
     <!-- 再放一个container -->
     <el-container>
@@ -23,8 +23,20 @@
 </template>
 
 <script>
+import eventBus from '../../utils/eventBus'
 export default {
-  components: {}
+  data () {
+    return {
+      collaspse: false
+    }
+  },
+  components: {},
+  created () {
+    // 开启监听
+    eventBus.$on('changeCollapse', () => {
+      this.collaspse = !this.collaspse
+    })
+  }
 }
 </script>
 

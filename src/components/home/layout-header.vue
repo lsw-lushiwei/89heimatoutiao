@@ -2,7 +2,7 @@
   <!-- 头部组件 -->
   <el-row type="flex" justify="space-between" class="layout-header" align="middle">
     <el-col :span="6" class="left">
-      <i class="el-icon-s-fold"></i>
+      <i @click="collaspseOrOpen" :class="{'el-icon-s-unfold' : collaspse , 'el-icon-s-fold' : !collaspse}"></i>
       <span class="title">江苏传智播客教育科技股份有限公司</span>
     </el-col>
     <el-col :span="4" class="right">
@@ -31,6 +31,7 @@ export default {
   // 生命周期查询用户头像
   data () {
     return {
+      collaspse: false, // 默认展开
       userInfo: {}, // 用户信息
       defaultImg: require('../../assets/img/avatar.jpg') // 先把地址转换成变量，再使用三元表达式
     }
@@ -46,6 +47,12 @@ export default {
   },
   // 使用elementui注册事件，实现退出
   methods: {
+    // 展开/不展开
+    collaspseOrOpen () {
+      this.collaspse = !this.collaspse // 直接取反
+      // 通知要改变宽度的组件
+      eventBus.$emit('changeCollapse') // 改变了折叠状态
+    },
     // 封装方法
     getUserInfo () {
       // 获取令牌
@@ -81,6 +88,9 @@ export default {
       font-size: 16px;
       color: #2c3e50;
       margin-left: 10px;
+    }
+    i{
+      font-size: 22px;
     }
   }
   .right {
