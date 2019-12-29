@@ -75,22 +75,21 @@ export default {
   },
   methods: {
     registerLogin () {
-      this.$refs.vessel.validate(isOK => {
+      this.$refs.vessel.validate(async isOK => {
         if (isOK) {
           // 认为校验表单数据成功
           // console.log('前端校验成功，将手机号与验证码发到后端校验')
           // 有两个参数
           // 地址参数/查询参数放params对象
           // body参数放data对象
-          this.$axios({
+          let res = await this.$axios({
             url: '/authorizations',
             method: 'post',
             data: this.loginForm
-          }).then(res => {
-            // 代表成功进入then
-            window.localStorage.setItem('user-token', res.data.token) // 前端缓存令牌
-            this.$router.push('/home') // 跳转到主页
           })
+          // 代表成功进入then
+          window.localStorage.setItem('user-token', res.data.token) // 前端缓存令牌
+          this.$router.push('/home') // 跳转到主页
         }
       })
     }

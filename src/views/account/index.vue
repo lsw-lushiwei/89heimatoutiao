@@ -58,46 +58,43 @@ export default {
   },
   methods: {
     // 上传头像
-    uploadImg (params) {
+    async uploadImg (params) {
       let data = new FormData() // 实例化一个对象
       data.append('photo', params.file) // 加入参数
-      this.$axios({
+      let res = await this.$axios({
         url: '/user/photo',
         method: 'patch',
         data
-      }).then(res => {
-        this.formData.photo = res.data.photo
-        eventBus.$emit('updateUserInfoSuccess') //
       })
+      this.formData.photo = res.data.photo
+      eventBus.$emit('updateUserInfoSuccess') //
     },
     // 获取用户信息
-    getUserInfo () {
-      this.$axios({
+    async getUserInfo () {
+      let res = await this.$axios({
         url: '/user/profile'
-      }).then(res => {
-        this.formData = res.data
       })
+      this.formData = res.data
     },
     // 保存时校验表单数据是否ok
-    seveUserInfo () {
-      this.$refs.myForm.validate((isOK) => {
+    async  seveUserInfo () {
+      await this.$refs.myForm.validate(async (isOK) => {
         // 调用保存方法
         if (isOK) {
           // 如果可以则调用接口
-          this.$axios({
+          await this.$axios({
             url: '/user/profile',
             method: 'patch',
             data: this.formData
-          }).then(res => {
-            // 进入到这里代表成功
-            // 提示即可，无需跳转
-            this.$message({
-              type: 'success',
-              message: '保存成功'
-            })
-            // 此时需要告诉头部组件 更新成功了 你也更新
-            eventBus.$emit('updateUserInfoSuccess') // 触发一盒自定义事件
           })
+          // 进入到这里代表成功
+          // 提示即可，无需跳转
+          this.$message({
+            type: 'success',
+            message: '保存成功'
+          })
+          // 此时需要告诉头部组件 更新成功了 你也更新
+          eventBus.$emit('updateUserInfoSuccess') // 触发一盒自定义事件
         }
       })
     }

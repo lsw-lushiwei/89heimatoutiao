@@ -36,16 +36,15 @@ export default {
   },
   methods: {
     // 定义上传方法
-    uploadImg (params) {
+    async uploadImg (params) {
       let data = new FormData() // 实例化一个对象
       data.append('image', params.file) // 添加文件参数
-      this.$axios({
+      let res = await this.$axios({
         url: '/user/images',
         data,
         method: 'post'
-      }).then(res => {
-        this.$emit('selectOneImg', res.data.url)
       })
+      this.$emit('selectOneImg', res.data.url)
     },
     // 点击图片时触发
     clickImg (url) {
@@ -57,18 +56,17 @@ export default {
       this.getAllImg()
     },
     // 获取所有素材
-    getAllImg () {
-      this.$axios({
+    async getAllImg () {
+      let res = await this.$axios({
         url: '/user/images',
         params: {
           collect: false, // 获取全部数据
           page: this.page.currentPage,
           per_page: this.page.pageSize
         }
-      }).then(res => {
-        this.list = res.data.results
-        this.page.total = res.data.total_count // 赋值总数
       })
+      this.list = res.data.results
+      this.page.total = res.data.total_count // 赋值总数
     }
   },
   created () {

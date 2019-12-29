@@ -140,20 +140,18 @@ export default {
       this.$router.push(`/home/publish/${id.toString()}`) // 跳转到发布页面,并且把id转成字符串,默认是大数据类型
     },
     // 注册删除事件
-    delArticle (id) {
+    async delArticle (id) {
       // 当前已发布的文章是无法删除的，只有类型是草稿的文章可以删除
-      this.$confirm('确定删除?').then(() => {
-        this.$axios({
-          method: 'delete',
-          url: `/articles/${id.toString()}` // 大数据类型，转换成字符串类型
-        }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '删除成功'
-          })
-          this.getConditionArticle() // 重新刷新调取数据
-        })
+      await this.$confirm('确定删除?')
+      await this.$axios({
+        method: 'delete',
+        url: `/articles/${id.toString()}` // 大数据类型，转换成字符串类型
       })
+      this.$message({
+        type: 'success',
+        message: '删除成功'
+      })
+      this.getConditionArticle() // 重新刷新调取数据
     },
     // 改变页码事件
     changePage (newPage) {
@@ -180,22 +178,20 @@ export default {
       this.getArticles(params) // 调用获取文章数据
     },
     // 获取频道
-    getChannels () {
-      this.$axios({
+    async  getChannels () {
+      let res = await this.$axios({
         url: '/channels'
-      }).then(res => {
-        this.channels = res.data.channels
       })
+      this.channels = res.data.channels
     },
     // 获取文章列表数据
-    getArticles (params) {
-      this.$axios({
+    async getArticles (params) {
+      let res = await this.$axios({
         url: '/articles',
         params
-      }).then(res => {
-        this.list = res.data.results // 接收文章列表数据
-        this.page.total = res.data.total_count // 文章总数
       })
+      this.list = res.data.results // 接收文章列表数据
+      this.page.total = res.data.total_count // 文章总数
     }
   },
   created () {

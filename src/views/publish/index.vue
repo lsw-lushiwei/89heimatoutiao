@@ -116,34 +116,31 @@ export default {
       }
     },
     // 获取频道
-    getChannels () {
-      this.$axios({
+    async getChannels () {
+      let res = await this.$axios({
         url: '/channels'
-      }).then(res => {
-        this.channels = res.data.channels // 获取频道数据
       })
+      this.channels = res.data.channels // 获取频道数据
     },
     publishArticle (draft) {
-      this.$refs.publishForm.validate((isOK) => {
+      this.$refs.publishForm.validate(async (isOK) => {
         if (isOK) {
           let { articleId } = this.$route.params // 获取动态路由参数
-          this.$axios({
+          await this.$axios({
             method: articleId ? 'put' : 'post',
             url: articleId ? `/articles/${articleId}` : '/articles',
             params: { draft },
             data: this.formData
-          }).then(res => {
-            this.$router.push('/home/articles') // 回到内容列表
           })
+          this.$router.push('/home/articles') // 回到内容列表
         }
       })
     },
-    getArticleById (articleId) {
-      this.$axios({
+    async  getArticleById (articleId) {
+      let res = await this.$axios({
         url: `/articles/${articleId}`
-      }).then(res => {
-        this.formData = res.data // 将指定文章数据给data数据
       })
+      this.formData = res.data // 将指定文章数据给data数据
     }
   },
   created () {

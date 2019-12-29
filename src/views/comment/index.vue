@@ -53,15 +53,14 @@ export default {
       this.page.currentPage = newPage
       this.getComment()
     },
-    getComment () {
+    async  getComment () {
       // axios默认是get类型
-      this.$axios({
+      let result = await this.$axios({
         url: '/articles',
         params: { response_type: 'comment', page: this.page.currentPage, par_page: this.page.pageSize }
-      }).then(result => {
-        this.list = result.data.results // 获取评论列表数据给本身data
-        this.page.total = result.data.total_count // 获取文章总条数
       })
+      this.list = result.data.results // 获取评论列表数据给本身data
+      this.page.total = result.data.total_count // 获取文章总条数
     },
     // 定义一个布尔值转化方法
     formatterBool (row, column, cellValue, index) {
@@ -72,29 +71,27 @@ export default {
       return cellValue ? '正常' : '关闭'
     },
     // 打开或者关闭
-    openOrClose (row) {
+    async openOrClose (row) {
       let mess = row.comment_status ? '关闭' : '打开'
       // 确定是进入then
-      this.$confirm(`确定要${mess}吗？`).then(() => {
-        // 确认用户要调用接口了
-        this.$axios({
-          method: 'put',
-          url: '/comments/status',
-          params: {
-            article_id: row.id.toString()
-          },
-          data: {
-            allow_comment: !row.comment_status
-          }
-        }).then(res => {
-          // 打开评论/关闭评论之后
-          this.$message({
-            type: 'success',
-            message: '操作成功'
-          })
-          this.getComment() // 重新获取数据
-        })
+      await this.$confirm(`确定要${mess}吗？`)
+      // 确认用户要调用接口了
+      await this.$axios({
+        method: 'put',
+        url: '/comments/status',
+        params: {
+          article_id: row.id.toString()
+        },
+        data: {
+          allow_comment: !row.comment_status
+        }
       })
+      // 打开评论/关闭评论之后
+      this.$message({
+        type: 'success',
+        message: '操作成功'
+      })
+      this.getComment() // 重新获取数据
     }
   },
   created () {

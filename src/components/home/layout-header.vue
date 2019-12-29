@@ -54,15 +54,13 @@ export default {
       eventBus.$emit('changeCollapse') // 改变了折叠状态
     },
     // 封装方法
-    getUserInfo () {
+    async getUserInfo () {
       // 获取令牌
-      this.$axios({
+      let res = await this.$axios({
         url: '/user/profile'
       // headers参数
-      }).then(res => {
-      // console.log(res.data)
-        this.userInfo = res.data // 获取用户个人信息
       })
+      this.userInfo = res.data // 获取用户个人信息
     },
     handleCommand (command) {
       if (command === 'quit') {

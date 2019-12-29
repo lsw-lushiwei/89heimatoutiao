@@ -72,52 +72,48 @@ export default {
   },
   methods: {
     // 定义一个删除方法
-    delMaterial (id) {
-      this.$confirm('确定删除？').then(() => {
-        // 调用删除接口
-        this.$axios({
-          url: `/user/images/${id}`,
-          method: 'delete'
-        }).then(() => {
-          // 重新加载数据
-          this.$message({
-            message: '删除成功',
-            type: 'success'
-          })
-          this.getAllMaterial()
-        })
+    async  delMaterial (id) {
+      await this.$confirm('确定删除？')
+      // 调用删除接口
+      await this.$axios({
+        url: `/user/images/${id}`,
+        method: 'delete'
       })
+      // 重新加载数据
+      this.$message({
+        message: '删除成功',
+        type: 'success'
+      })
+      this.getAllMaterial()
     },
     // 收藏或者取消收藏
-    collectOrCancel (row) {
-      this.$axios({
+    async  collectOrCancel (row) {
+      await this.$axios({
         url: `/user/images/${row.id}`,
         method: 'put',
         data: {
           collect: !row.is_collected // 如果是收藏则变成取消，如果是取消则变成收藏
         }
-      }).then(() => {
-        this.$message({
-          message: '操作成功',
-          type: 'success'
-        })
-        this.getAllMaterial() // 调用重新加载
       })
+      this.$message({
+        message: '操作成功',
+        type: 'success'
+      })
+      this.getAllMaterial() // 调用重新加载
     },
     // 上传图片
-    uploadImg (params) {
+    async   uploadImg (params) {
       this.loding = true
       let form = new FormData()
       form.append('image', params.file) // 添加文件到FormData
-      this.$axios({
+      await this.$axios({
         method: 'post',
         url: '/user/images',
         data: form // formdata数据
-      }).then(res => {
-        // 说明已经上传成功了一张图片
-        this.loding = true
-        this.getAllMaterial()
       })
+      // 说明已经上传成功了一张图片
+      this.loding = true
+      this.getAllMaterial()
     },
     // 切换分页
     changePage (newPage) {
@@ -130,18 +126,17 @@ export default {
       this.getAllMaterial()
     },
     // 获取所有的素材/收藏
-    getAllMaterial () {
-      this.$axios({
+    async  getAllMaterial () {
+      let res = await this.$axios({
         url: '/user/images',
         params: {
           collect: this.activeName === 'collect',
           page: this.page.currentPage,
           per_page: this.page.pageSize
         }
-      }).then(res => {
-        this.list = res.data.results
-        this.page.total = res.data.total_count // 获取总条数
       })
+      this.list = res.data.results
+      this.page.total = res.data.total_count // 获取总条数
     }
   },
   created () {
